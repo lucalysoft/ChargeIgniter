@@ -1,7 +1,13 @@
-<?
-$chargify = new Chargify;
+<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-print_r($chargify->get_products());
+/**
+ * Chargify API
+ *
+ * A Chargify API class for CodeIgniter
+ *
+ * @author		Kyle Anderson <kyle@crucialwebhost.com>
+ * @link		http://www.crucialwebhost.com
+ */
 
 class Chargify {
 	protected $username 	= 'CHARGIFY_API_KEY';
