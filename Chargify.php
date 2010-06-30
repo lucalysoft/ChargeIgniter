@@ -4,9 +4,9 @@ $chargify = new Chargify;
 print_r($chargify->get_products());
 
 class Chargify {
-	protected $username = 'KnwrHuSLYpDdjyAVTNSt';
+	protected $username = 'API_KEY';
 	protected $password = 'x';
-	protected $domain 	= 'tagmeo';
+	protected $domain = 'CHARGIFY_SUBDOMAIN';
 	
 	public function get_customer($customer_id, $source = 'remote') {
 		switch($source) {
