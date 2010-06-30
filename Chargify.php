@@ -1,17 +1,17 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Chargify API
+ * ChargeIgniter
  *
  * A Chargify API class for CodeIgniter
  *
- * @author		Kyle Anderson <kyle@crucialwebhost.com>
- * @link		http://www.crucialwebhost.com
+ * @author		Kyle Anderson <kyle@chargeigniter.com>
+ * @link		http://www.chargeigniter.com
  */
 
 class Chargify {
-	protected $username 	= 'CHARGIFY_API_KEY';
-	protected $domain 		= 'CHARGIFY_SUBDOMAIN';
+	protected $username 	= '';		// Chargify API Key
+	protected $domain 	= '';		// Chargify Subdomain
 	protected $password 	= 'x';
 	
 	public function get_customer($customer_id, $source = 'remote') {
