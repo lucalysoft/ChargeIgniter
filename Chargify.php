@@ -7,19 +7,34 @@
  * @link      http://www.chargeigniter.com
  */
 
-namespace ChargeIgniter;
+namespace ChargifyIgniter;
 
 /**
  * Class Chargify
  *
- * @package ChargeIgniter
+ * @package ChargifyIgniter
  */
 class Chargify
 {
+    /**
+     * @var string
+     */
     protected $username = ''; // Chargify API Key
+    /**
+     * @var string
+     */
     protected $domain = ''; // Chargify Subdomain
-    protected $password = 'x';
+    /**
+     * @var string
+     */
+    private $password = 'x';
 
+    /**
+     * @param        $customer_id
+     * @param string $source
+     *
+     * @return bool
+     */
     public function get_customer($customer_id, $source = 'remote')
     {
         switch ($source) {
@@ -44,6 +59,11 @@ class Chargify
         return $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param int $page_number
+     *
+     * @return array|bool
+     */
     public function get_customers($page_number = 1)
     {
         $result = $this->query('/customers.json?page=' . $page_number);
@@ -65,6 +85,11 @@ class Chargify
         return $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $data
+     *
+     * @return bool
+     */
     public function create_customer($data)
     {
         $data = array(
@@ -86,6 +111,12 @@ class Chargify
         return $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $customer_id
+     * @param $data
+     *
+     * @return bool
+     */
     public function edit_customer($customer_id, $data)
     {
         $data = array(
@@ -107,11 +138,21 @@ class Chargify
         $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $customer_id
+     *
+     * @return \stdClass
+     */
     public function delete_customer($customer_id)
     {
         return $this->query('/customers/' . $customer_id . '.json', 'delete');
     }
 
+    /**
+     * @param $customer_id
+     *
+     * @return bool|mixed
+     */
     public function get_customer_subscriptions($customer_id)
     {
         $result = $this->query('/customers/' . $customer_id . '/subscriptions.json');
@@ -157,6 +198,9 @@ class Chargify
         return $this->error($result->response, $result->code);
     }
 
+    /**
+     * @return array|bool
+     */
     public function get_products()
     {
         $result = $this->query('/products.json');
@@ -199,6 +243,12 @@ class Chargify
         return $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param int $page_number
+     * @param int $results_per_page
+     *
+     * @return bool|mixed
+     */
     public function get_subscriptions($page_number = 1, $results_per_page = 2000)
     {
         $result = $this->query('/subscriptions.json?page=' . $page_number . '&per_page=' . $results_per_page);
@@ -216,6 +266,11 @@ class Chargify
         return $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $data
+     *
+     * @return bool
+     */
     public function create_subscription($data)
     {
         $data = array(
@@ -231,6 +286,12 @@ class Chargify
         return $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $subscripton_id
+     * @param $data
+     *
+     * @return bool
+     */
     public function edit_subscription($subscripton_id, $data)
     {
         $data = array(
@@ -252,6 +313,12 @@ class Chargify
         $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $subscription_id
+     * @param $data
+     *
+     * @return bool
+     */
     public function upgrade_subscription($subscription_id, $data)
     {
         $data = array(
@@ -273,6 +340,12 @@ class Chargify
         $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param        $subscripton_id
+     * @param string $message
+     *
+     * @return bool
+     */
     public function cancel_subscription($subscripton_id, $message = '')
     {
         if (! empty($message)) {
@@ -300,6 +373,11 @@ class Chargify
         return $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $subscription_id
+     *
+     * @return bool
+     */
     public function reactivate_subscription($subscription_id)
     {
         $result = $this->query('/subscriptions/' . $subscription_id . '/reactivate.json', 'put');
@@ -317,6 +395,11 @@ class Chargify
         return $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $subscription_id
+     *
+     * @return bool
+     */
     public function reset_subscription($subscription_id)
     {
         $result = $this->query('/subscriptions/' . $subscription_id . '/reset_balance.json', 'put');
@@ -411,6 +494,13 @@ class Chargify
         $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $subscription_id
+     * @param $component_id
+     * @param $data
+     *
+     * @return bool
+     */
     public function create_component_usage($subscription_id, $component_id, $data)
     {
         $data = array(
@@ -436,6 +526,12 @@ class Chargify
         $this->error($result->response, $result->code);
     }
 
+    /**
+     * @param $subscription_id
+     * @param $component_id
+     *
+     * @return array|bool
+     */
     public function get_component_usage($subscription_id, $component_id)
     {
         $result = $this->query('/subscriptions/' . $subscription_id . '/components/' . $component_id . '/usages.json');
@@ -638,7 +734,7 @@ class Chargify
                 $detail = 'A generic error message, given when no more specific message is suitable.';
                 break;
             default:
-                $code   = 'ERROR CODE UNKNOWN';
+                $code   = "ERROR CODE $code UNKNOWN";
                 $detail = 'An error code was thrown that is not defined in the application.';
                 break;
         }
@@ -658,6 +754,8 @@ class Chargify
             }
         }
 
+        debug_print_backtrace();
         print '</pre>' . "\n\n";
+
     }
 }
